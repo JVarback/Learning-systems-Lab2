@@ -1,1 +1,7 @@
-print('hej')
+
+def hej():
+    pass
+
+
+
+input('hej')
