@@ -37,7 +37,7 @@ def distance_calc(id1, id2):
     distance = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
     return distance
 
-
+# Fitness == total distance travelled, so less is better
 def fitness(individual):
     total_distance = 0
     #dist_list = []
@@ -64,9 +64,11 @@ def mutation():
 def selection():
     pass
 
+def start_end_connect(): # Behövs det en funktion för att connecta start och slutpunkt????
+    pass
 
 
-
+# Creates the entire population
 def create_pop(population):
     pop_list = []
 
@@ -83,3 +85,8 @@ population = create_pop(pop_size)
 print(len(population))
 
 
+""" Jag torr att vi har en fullt fungerande fitness funktion, som använder funktionen för beräkning av distansen.
+Populations skapandet funkar bra, verkar vara helt random
+Nästa steg är nog att börja med den faktiska genetiska algoritmen. 
+Börja kolla på hur du kan välja individer, sortera lista efter minst värde??
+Sedan bestäm en selection funktion, kanske turnament?? """
