@@ -56,11 +56,28 @@ def fitness(individual):
     
 
 
-def crossover():
-    pass
+def crossover(p1, p2):
+    
+    child1 = 0
+    child2 = 0
+    rand_idx = random.randint(1,len(p1)-1)
 
-def mutation():
-    pass
+    child1 = p1[:rand_idx] + p2[rand_idx:]
+    child2 = p2[:rand_idx] + p1[rand_idx:]
+    
+    return child1, child2
+
+def mutation(c1, c2):
+    idx1, idx2 = random.sample(range(1,len(c1)-1), 2)
+
+    c1[idx1], c1[idx2] = c1[idx2], c1[idx1]
+    
+    idx1, idx2 = random.sample(range(1,len(c1)-1), 2)
+    c2[idx1], c2[idx2] = c2[idx2], c2[idx1]
+
+    return c1, c2
+    
+
 
 def tournament_selection(pop, k):
     nr1 = 999999
@@ -105,9 +122,23 @@ for individ in population:
     indv_fit = fitness(individ)
     pop_fitness.append(indv_fit)
 
-pop_fitness.sort()
+#pop_fitness.sort()
 
-select = tournament_selection(pop_fitness,k)
+indv1, indv2 = tournament_selection(pop_fitness,k)
+
+for idx in range(len(population)):
+    
+    if indv1 == pop_fitness[idx]:
+        parent1 = population[idx]
+    if indv2 == pop_fitness[idx]:
+        parent2 = population[idx]
+
+
+child1, child2 = crossover(parent1, parent2)
+
+child1, child2 = mutation(child1, child2)
+
+print(child1, child2)
 
 """ Jag torr att vi har en fullt fungerande fitness funktion, som använder funktionen för beräkning av distansen.
 Populations skapandet funkar bra, verkar vara helt random
