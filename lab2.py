@@ -57,13 +57,11 @@ def fitness(individual):
 
 def crossover(p1, p2):
     
-    child1 = 0
+    child1 = p1
     child2 = 0
-    rand_idx = random.randint(1,len(p1)-1)
-
-    child1 = p1[:rand_idx] + p2[rand_idx:]
-    child2 = p2[:rand_idx] + p1[rand_idx:]
     
+
+
     return child1, child2
 
 def mutation(c1, c2):
@@ -154,14 +152,16 @@ for i in range(10000):
         indv_fit = fitness(individ)
         pop_fitness.append(indv_fit)
     
-    sorted(pop_fitness)
-    if pop_fitness[0] < best:
-        best = pop_fitness[0]
+    
+    sorted_indices = sorted(range(len(pop_fitness)), key=lambda k: pop_fitness[k])
+    if pop_fitness[sorted_indices[0]] < best:
+        best = pop_fitness[sorted_indices[0]]
+        best_individual = new_pop[sorted_indices[0]]
         
         print('Generation:', i)
         print('Shortest distance:',pop_fitness[0])
 
-
+print('Best Individual:', best_individual)
 
 """ Jag torr att vi har en fullt fungerande fitness funktion, som använder funktionen för beräkning av distansen.
 Populations skapandet funkar bra, verkar vara helt random
