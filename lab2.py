@@ -18,6 +18,7 @@ data_list = [(int(data[0]), float(data[1]), float(data[2])) for data in data_lis
 # Hyperparameters
 pop_size = 20
 locations = 52
+k = 4
 
 # Skapar en random individ med alla locations i en lista
 def random_individual(locations): 
@@ -61,11 +62,26 @@ def crossover():
 def mutation():
     pass
 
-def selection():
-    pass
+def tournament_selection(pop, k):
+    nr1 = 999999
+    nr2 = 999999
+
+    for i in range(k):
+        
+        ind = random.choice(pop)
+
+        if  ind < nr1:
+            nr2 = nr1
+            nr1 = ind
+        elif ind < nr2:
+            nr2 = ind
+            
+    return nr1,nr2
 
 def start_end_connect(): # Behövs det en funktion för att connecta start och slutpunkt????
     pass
+
+
 
 
 # Creates the entire population
@@ -82,8 +98,16 @@ def create_pop(population):
 
 population = create_pop(pop_size)
 
-print(len(population))
+pop_fitness = []
 
+
+for individ in population:
+    indv_fit = fitness(individ)
+    pop_fitness.append(indv_fit)
+
+pop_fitness.sort()
+
+select = tournament_selection(pop_fitness,k)
 
 """ Jag torr att vi har en fullt fungerande fitness funktion, som använder funktionen för beräkning av distansen.
 Populations skapandet funkar bra, verkar vara helt random
