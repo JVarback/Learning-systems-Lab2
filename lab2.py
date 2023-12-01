@@ -22,8 +22,9 @@ k = 4
 
 # Skapar en random individ med alla locations i en lista
 def random_individual(locations): 
-    indv = random.sample(range(1,locations+1), locations-1)
     
+    indv = random.sample(range(1,locations+1), locations-1)
+    indv.append(indv[0])
     return indv
 
 
@@ -43,7 +44,7 @@ def fitness(individual):
     total_distance = 0
     #dist_list = []
     for i in range(len(individual)):
-        if i+1 > 50:
+        if i+1 > 51:
             break
         distance = distance_calc(individual[i], individual[i+1])
 
@@ -51,8 +52,6 @@ def fitness(individual):
         #dist_list.append(distance)
 
     return total_distance    
-    
-
     
 
 
@@ -100,7 +99,6 @@ def start_end_connect(): # Behövs det en funktion för att connecta start och s
 
 
 
-
 # Creates the entire population
 def create_pop(population):
     pop_list = []
@@ -113,32 +111,57 @@ def create_pop(population):
     return pop_list
 
 
-population = create_pop(pop_size)
+first_pop = create_pop(pop_size)
 
 pop_fitness = []
+new_pop = []
+population = []
+best = 999999
 
-
-for individ in population:
-    indv_fit = fitness(individ)
-    pop_fitness.append(indv_fit)
-
-#pop_fitness.sort()
-
-indv1, indv2 = tournament_selection(pop_fitness,k)
-
-for idx in range(len(population)):
+for i in range(10000):
     
-    if indv1 == pop_fitness[idx]:
-        parent1 = population[idx]
-    if indv2 == pop_fitness[idx]:
-        parent2 = population[idx]
+    population = new_pop
+    new_pop = []
+    if i == 0:
+        population = first_pop
+
+    for individ in population:
+        indv_fit = fitness(individ)
+        pop_fitness.append(indv_fit)
 
 
-child1, child2 = crossover(parent1, parent2)
+    for x in range(5):
 
-child1, child2 = mutation(child1, child2)
+        indv1, indv2 = tournament_selection(pop_fitness,k)
 
-print(child1, child2)
+        for idx in range(len(population)):
+            
+            if indv1 == pop_fitness[idx]:
+                parent1 = population[idx]
+            if indv2 == pop_fitness[idx]:
+                parent2 = population[idx]
+
+
+        child1, child2 = crossover(parent1, parent2)
+
+        child1, child2 = mutation(child1, child2)
+
+        new_pop += [parent1] + [parent2] + [child1] + [child2]
+
+    
+    pop_fitness = []
+    for individ in new_pop:
+        indv_fit = fitness(individ)
+        pop_fitness.append(indv_fit)
+    
+    sorted(pop_fitness)
+    if pop_fitness[0] < best:
+        best = pop_fitness[0]
+        
+        print('Generation:', i)
+        print('Shortest distance:',pop_fitness[0])
+
+
 
 """ Jag torr att vi har en fullt fungerande fitness funktion, som använder funktionen för beräkning av distansen.
 Populations skapandet funkar bra, verkar vara helt random
